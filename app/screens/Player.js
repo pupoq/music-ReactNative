@@ -80,7 +80,7 @@ const Player = () => {
             <Ionicons name='play-skip-back-sharp' size={50} color='black' />
           </View>
           <Pressable onPress={() => handlePlay(songs[songIndex])} style={styles.icon}>
-            <Ionicons name='ios-play-circle-sharp' size={80} color='black' />
+            <Ionicons name={soundObj?.status.isPlaying ? 'ios-pause-circle' : 'ios-play-circle-sharp'} size={80} color='black' />
           </Pressable>
           <View style={styles.icon}>
             <Ionicons name='play-skip-forward' size={50} color='black' />
