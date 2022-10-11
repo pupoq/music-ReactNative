@@ -12,7 +12,7 @@ const MusicItem = ({item}) => {
         {
           backgroundColor: pressed
           ? '#555555'
-          : 'grey'
+          : '#127bfc'
         },
         styles.container
       ]}>

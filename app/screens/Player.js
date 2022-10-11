@@ -2,17 +2,39 @@ import { View, Text, StyleSheet, Pressable, Dimensions, FlatList, Image } from '
 import React, {useState, useEffect} from 'react'
 import songs from '../../model/data';
 import Ionicons from 'react-native-vector-icons/Ionicons'
-
 import Slider from '@react-native-community/slider';
+
 import {Audio} from 'expo-av';
 
 const {height ,width} = Dimensions.get('window');
 
 const Player = () => {
 
-  const handlePlay = async () => {
-    const soundObj = await Audio.Sound.createAsync(songs[1].url)
-    await soundObj.sound.playAsync()
+  const [songIndex, setIndex] = useState(0)
+  const [soundObj, setSoundObj] = useState(null)
+
+  const handlePlay = async (songObj) => {
+    if(soundObj === null){
+      const playback = new Audio.Sound()
+      const status = await playback.loadAsync(songObj.url, {shouldPlay: true})
+      setSoundObj({playback, status})
+    }
+
+    if(soundObj.status.isLoaded && !soundObj.status.isPlaying){
+      const status = await soundObj.playback.plauAsync()
+      setSoundObj({...soundObj, status})
+    }
+
+    if(soundObj.status.isLoaded && soundObj.status.isPlaying){
+      const status = await soundObj.playback.pauseAsync()
+      setSoundObj({...soundObj, status})
+    }
+
+    // const soundObj = await Audio.Sound.createAsync(songs[songIndex].url)
+    // await soundObj.sound.playAsync()
+
+
+
   }
 
   return (
@@ -23,25 +45,45 @@ const Player = () => {
           renderItem={({item}) => (
             <View style={styles.imgCont}>
               <Image style={styles.img} source={item.artwork}></Image>
-              <View>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.artist}>{item.artist}</Text>
-              </View>
             </View>
           )}
+          onMomentumScrollEnd = {event => {
+            let index = Math.floor(event.nativeEvent.contentOffset.x / event.nativeEvent.layoutMeasurement.width)
+            setIndex(index)
+            // console.log(`ContentOffset: ${event.nativeEvent.contentOffset.x}`)
+            // console.log(`width: ${event.nativeEvent.layoutMeasurement.width}`)
+          }}
           horizontal
           pagingEnabled
         />
       </View>
+      <View style={styles.songDataContainer}>
+        <View>
+          <Text style={styles.songTitle}>{songs[songIndex].title}</Text>
+          <Text style={styles.songArtist}>{songs[songIndex].artist}</Text>
+        </View>
+        <Ionicons name='heart-outline' size={24}/> 
+      </View>
+      <Slider
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={1}
+          minimumTrackTintColor="#FFFFFF"
+          maximumTrackTintColor="#000000"
+        />
+        <View style={styles.durationCont}>
+          <Text style={styles.duration}>0:00</Text>
+          <Text style={styles.duration}>0:00</Text>
+        </View>
       <View style={styles.buttonsContainer}>
           <View style={styles.icon}>
-            <Ionicons name='play-skip-back-sharp' size={60} color='black' />
+            <Ionicons name='play-skip-back-sharp' size={50} color='black' />
           </View>
-          <Pressable onPress={handlePlay} style={styles.icon}>
+          <Pressable onPress={() => handlePlay(songs[songIndex])} style={styles.icon}>
             <Ionicons name='ios-play-circle-sharp' size={80} color='black' />
           </Pressable>
           <View style={styles.icon}>
-            <Ionicons name='play-skip-forward' size={60} color='black' />
+            <Ionicons name='play-skip-forward' size={50} color='black' />
           </View>
       </View>
     </View>
@@ -64,10 +106,8 @@ const styles = StyleSheet.create({
   imgCont: {
     width: width,
     justifyContent: 'center',
-    // alignItems: 'center',
+    alignItems: 'center',
     flexDirection: 'column',
-    position: 'relative',
-    left: '5%',
     marginBottom: 0
   },
   img: {
@@ -90,5 +130,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
-  } 
+  },
+  songDataContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    width: width,
+    padding: 10
+  },
+  songTitle: {
+    color: 'black',
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
+  songArtist: {
+    color: 'grey'
+  },
+  bottomCont: {
+
+  },
+  slider: {
+    width: width
+  },
+  durationCont: {
+    flexDirection: 'row',
+    width: width,
+    padding: 10,
+    justifyContent: 'space-between'
+  }
+
 })

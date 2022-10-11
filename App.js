@@ -1,6 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './app/navigation/AppNavigator';
 import { StatusBar} from 'react-native';
+import Asd from './app/components/Asd';
 
 const App = () => {
 
@@ -21,6 +22,7 @@ const App = () => {
       <StatusBar />
       <AppNavigator/>
     </NavigationContainer>
+    // <Asd />
   );
 };
 
