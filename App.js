@@ -2,13 +2,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './app/navigation/AppNavigator';
 import { StatusBar} from 'react-native';
 import Asd from './app/components/Asd';
+import Glas from './app/components/glas';
 
 const App = () => {
 
   const MyTheme = {
     dark: false,
     colors: {
-      primary: '19191b',
+      primary: 'white',
       background: '#19191b',
       card: '#000000',
       text: 'white',
@@ -23,6 +24,7 @@ const App = () => {
       <AppNavigator/>
     </NavigationContainer>
     // <Asd />
+    // <Glas />
   );
 };
 
