@@ -9,21 +9,27 @@ const Asd = () => {
     const [first, setFirst] = useState('')
     const [second, setSecond] = useState('')
     const [arr, setArr] = useState([])
+    const [result, setResult] = useState('')
 
     const press = async () => {
+        let id1 = arr.length
+        console.log(id1)
+
         let obj = {
             first: first,
-            sec: second
+            sec: second,
+            id: id1++
         }
+        let array = arr
+        array.push(obj)
+        setArr(array)
+        console.log(arr)
 
-        let arr2 = await AsyncStorage.getItem('array')
-        if(arr2 !== null){
-            arr2.push(obj)
-            setArr(arr2)
-        } else {
-            await AsyncStorage.setItem('array', JSON.stringify(arr2))
-            arr2.push(obj)
-    }
+        for(let item of arr){
+            setResult(() => {
+                <View><Text>{item.first}</Text></View>
+            })
+        }
     }
 
   return (
@@ -43,13 +49,15 @@ const Asd = () => {
             </View>
             <Pressable onPress={press}><Text style={styles.btn}>Add</Text></Pressable>
         </View>
-        <View>
+        <View style={styles.res}>
             <FlatList
             data={arr}
             renderItem={({item}) => (
-            <View item={item.first}/>
+            <View item={item.first}><Text>{item.first}</Text></View>
             )}
+            keyExtractor={item => item.id}
         />
+        {result}
         </View>
     </View>
   )
@@ -110,5 +118,9 @@ const styles = StyleSheet.create({
         color: 'white',
         borderRadius: 5,
         marginTop: 10
+    },
+    res: {
+        // marginBottom: 700,
+        color: 'red'
     }
 })

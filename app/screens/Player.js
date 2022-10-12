@@ -57,33 +57,35 @@ const Player = () => {
           pagingEnabled
         />
       </View>
-      <View style={styles.songDataContainer}>
-        <View>
-          <Text style={styles.songTitle}>{songs[songIndex].title}</Text>
-          <Text style={styles.songArtist}>{songs[songIndex].artist}</Text>
-        </View>
-        <Ionicons name='heart-outline' size={24}/> 
-      </View>
+      <View style={{position: 'relative', bottom: 50, width: width-30}}>
       <Slider
           style={styles.slider}
           minimumValue={0}
           maximumValue={1}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
+          minimumTrackTintColor="white"
+          maximumTrackTintColor="#00000" 
         />
         <View style={styles.durationCont}>
           <Text style={styles.duration}>0:00</Text>
           <Text style={styles.duration}>0:00</Text>
         </View>
+      </View>
+        <View style={styles.songDataContainer}>
+        <View>
+          <Text style={styles.songTitle}>{songs[songIndex].title}</Text>
+          <Text style={styles.songArtist}>{songs[songIndex].artist}</Text>
+        </View>
+        <Ionicons name='heart-outline' size={24} color='grey'/> 
+      </View>
       <View style={styles.buttonsContainer}>
           <View style={styles.icon}>
-            <Ionicons name='play-skip-back-sharp' size={50} color='black' />
+            <Ionicons name='play-skip-back-sharp' size={50} color='grey' />
           </View>
           <Pressable onPress={() => handlePlay(songs[songIndex])} style={styles.icon}>
-            <Ionicons name={soundObj?.status.isPlaying ? 'ios-pause-circle' : 'ios-play-circle-sharp'} size={80} color='black' />
+            <Ionicons name={soundObj?.status.isPlaying ? 'ios-pause-circle' : 'ios-play-circle-sharp'} size={80} color='grey' />
           </Pressable>
           <View style={styles.icon}>
-            <Ionicons name='play-skip-forward' size={50} color='black' />
+            <Ionicons name='play-skip-forward' size={50} color='grey' />
           </View>
       </View>
     </View>
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
   icon: {
   },
   buttonsContainer: {
-    marginBottom: 100,
+    marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
@@ -135,12 +137,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 20,
-    width: width,
-    padding: 10
+    marginHorizontal: 40,
+    width: width-30,
+    padding: 10,
+    marginBottom: 50
   },
   songTitle: {
-    color: 'black',
+    color: 'white',
     fontSize: 22,
     fontWeight: 'bold'
   },
@@ -151,13 +154,16 @@ const styles = StyleSheet.create({
 
   },
   slider: {
-    width: width
+    width: width-30
   },
   durationCont: {
     flexDirection: 'row',
-    width: width,
+    width: width-30,
     padding: 10,
     justifyContent: 'space-between'
+  },
+  duration: {
+    color: 'grey'
   }
 
 })

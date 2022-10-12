@@ -1,24 +1,24 @@
-import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Dimensions, Image } from 'react-native'
 import React from 'react'
 import Feather from 'react-native-vector-icons/Feather'
 
 const {width} = Dimensions.get('window');
 
 const MusicItem = ({item}) => {
-  const {title, artist, duration} = item;
+  const {title, artist, duration, artwork} = item;
 
   return (
     <Pressable style={({pressed}) => [
         {
           backgroundColor: pressed
-          ? '#555555'
-          : '#127bfc'
+          ? '#232325'
+          : '#19191b'
         },
         styles.container
       ]}>
       <View style={styles.leftContainer}>
         <View style={styles.icon}>
-          <Feather name='play' size={24} color='white' />
+          <Image style={styles.img} source={artwork}></Image>
         </View>
         <View style={styles.namesWrapper}>
           <Text style={styles.title}>{title}</Text>
@@ -37,11 +37,11 @@ export default MusicItem
 const styles = StyleSheet.create({
   container: {
     width: width,
-    height: 80,
+    height: 70,
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: -0.3,
-    borderColor: 'white',
+    borderColor: '#19191b',
     borderWidth: 4
   },
   leftContainer: {
@@ -53,19 +53,25 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     color: 'white'
   },
   artist: {
-    color: 'black'
+    color: '#5c5b5e',
+    size: 12
   },
   rightContainer: {
 
   },
   duration: {
-    color: 'white',
+    color: '#5c5b5e',
     position: "relative",
     right: 10
+  },
+  img: {
+    width: 40,
+    height: 40,
+    borderRadius: 5
   }
 })
