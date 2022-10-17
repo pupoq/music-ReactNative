@@ -13,12 +13,74 @@ const Player = () => {
   const ref = useRef(null)
   const [songIndex, setIndex] = useState(0)
   const [soundObj, setSoundObj] = useState(null)
+  const [seconds, setSeconds] = useState(0)
+  const [seconds2, setSeconds2] = useState(0)
+  const [duration, setDuration] = useState(null)
+  const [position, setPostion] = useState(null)
+
+  const asd = () => {
+    setSeconds('00')
+  }
+
+  const onUpdate = (status) => {
+    if(status.isLoaded && status.isPlaying){
+      console.log(status.positionMillis)
+      setPostion(status.positionMillis)
+      setDuration(status.durationMillis)
+
+      let num = `0${Math.floor(status.positionMillis / 1000)}`
+      let num1 = Math.floor(status.positionMillis / 1000) - 60
+      let num2 = Math.floor(status.positionMillis / 1000) - 120
+      let num3 = Math.floor(status.positionMillis / 1000) - 180
+      let num4 = Math.floor(status.positionMillis / 1000) - 240
+      let num5 = Math.floor(status.positionMillis / 1000) - 300
+      let num6 = Math.floor(status.positionMillis / 1000) - 360
+      let qwert = 0
+
+      setSeconds(Math.floor(status.positionMillis / 1000))
+
+      if(Math.floor(status.positionMillis / 1000) < 10){
+        setSeconds(num)
+      } else if(Math.floor(status.positionMillis / 1000) >= 60){
+        setSeconds2(qwert + 1)
+        setSeconds(num1)
+      } else if(Math.floor(status.positionMillis / 1000) >= 120){
+        setSeconds2(qwert + 2)
+        setSeconds(num2)
+      } else if(Math.floor(status.positionMillis / 1000) >= 180){
+        setSeconds2(qwert + 3)
+        setSeconds(num3)
+      } else if(Math.floor(status.positionMillis / 1000) >= 240){
+        setSeconds2(qwert + 4)
+        setSeconds(num4)
+      } else if(Math.floor(status.positionMillis / 1000) >= 300){
+        setSeconds2(qwert + 5)
+        setSeconds(num5)
+      } else if(Math.floor(status.positionMillis / 1000) >= 360){
+        setSeconds2(qwert + 6)
+        setSeconds(num6)
+      }
+    
+    }
+    // console.log(status.positionMillis / 1000)
+  }
+
+  const updateProgressBar = () => {
+    if(position !== null && duration !== null){
+      return position / duration
+    } 
+      return 0
+    
+  }
+
+  
 
   const handlePlay = async (songObj) => {
     if(soundObj === null){
-      const playbackObj = new Audio.Sound()
-      const status = await playbackObj.loadAsync(songObj.url, {shouldPlay: true})
-      setSoundObj({playbackObj, status})
+      // const playbackObj = new Audio.Sound()
+      // const status = await playbackObj.loadAsync(songObj.url, {shouldPlay: true})
+      // setSoundObj({playbackObj, status})
+      play(songObj,setSoundObj,onUpdate)
     }
 
     if(soundObj.status.isLoaded && soundObj.status.isPlaying){
@@ -48,12 +110,13 @@ const Player = () => {
     })
 
     if(soundObj !== null && soundObj.status.isPlaying){
-      handleMusicOnScroll().then(() => play(songs[songIndex], setSoundObj))
+      handleMusicOnScroll().then(() => play(songs[songIndex], setSoundObj, onUpdate))
     }
 
     if(soundObj !== null && !soundObj.status.isPlaying){
       handleMusicOnScroll()
     }
+    asd()
   }, [songIndex])
 
   return (
@@ -84,12 +147,13 @@ const Player = () => {
           style={styles.slider}
           minimumValue={0}
           maximumValue={1}
+          value={updateProgressBar()}
           minimumTrackTintColor="white"
           maximumTrackTintColor="#00000" 
         />
         <View style={styles.durationCont}>
-          <Text style={styles.duration}>0:00</Text>
-          <Text style={styles.duration}>0:00</Text>
+          <Text style={styles.duration}>0{seconds2}:{seconds}</Text>
+          <Text style={styles.duration}>{songs[songIndex].duration}</Text>
         </View>
       </View>
         <View style={styles.songDataContainer}>

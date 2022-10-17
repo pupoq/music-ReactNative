@@ -3,6 +3,7 @@ import AppNavigator from './app/navigation/AppNavigator';
 import { StatusBar} from 'react-native';
 import Asd from './app/components/Asd';
 import Glas from './app/components/glas';
+import Casino from './app/components/Casino';
 
 const App = () => {
 
@@ -19,12 +20,13 @@ const App = () => {
   };
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <StatusBar />
-      <AppNavigator/>
-    </NavigationContainer>
+    // <NavigationContainer theme={MyTheme}>
+    //   <StatusBar />
+    //   <AppNavigator/>
+    // </NavigationContainer>
     // <Asd />
     // <Glas />
+    <Casino />
   );
 };
 
