@@ -111,7 +111,7 @@ const Player = () => {
 
     if(soundObj !== null && soundObj.status.isPlaying){
       handleMusicOnScroll().then(() => play(songs[songIndex], setSoundObj, onUpdate))
-    }
+    } 
 
     if(soundObj !== null && !soundObj.status.isPlaying){
       handleMusicOnScroll()
@@ -176,7 +176,6 @@ const Player = () => {
           </Pressable>
           <Pressable onPress={() => {
             if(songIndex === songs.length - 1) return
-
             setIndex( songIndex + 1)
           }} style={styles.icon}>
             <Ionicons name='play-skip-forward' size={50} color='grey' />

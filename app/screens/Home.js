@@ -1,14 +1,32 @@
 import React, {useState, useEffect} from 'react'
 import { View, Text, StyleSheet, Pressable, Dimensions, FlatList, Image, ImageBackground, Alert } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const Casino = () => {
+export const Home = ({navigation}) => {
 
     const [selectedNum, setSelectedNum] = useState(0)
-    const [first, setFirst] = useState(0)
-    const [sec, setSec] = useState(0)
-    const [third, setThird] = useState(0)
+    const [first, setFirst] = useState(7)
+    const [sec, setSec] = useState(7)
+    const [third, setThird] = useState(7)
     const [array, setArray] = useState([0, 0, 0])
-    const [cash, setCash] = useState(2000)
+    const [cash, setCash] = useState(0)
+    const [name, setName] = useState('')
+
+    const getData = async () => {
+        try {
+            AsyncStorage.getItem('Username')
+            .then(value => {
+                if(value !== null){
+                    value = JSON.parse(value)
+                    console.log(value)
+                    setCash(value.cash)
+                    setName(value.login)
+                }
+            })
+        } catch(error) {
+            console.log(error)
+        }
+    }
 
     const calc = () => {
         setFirst(Math.floor(Math.random() * 7) + 1)
@@ -18,23 +36,36 @@ export const Casino = () => {
         setArray([first, sec, third])
     }
 
-    const qwe = () => {
-    if(selectedNum === first && selectedNum === sec && selectedNum === third){
-        Alert.alert('Три совпадения! Ебать! Ваш баланс пополнен на 100 000$')
-                setCash(cash + 100000)
-    } else if(selectedNum === first && selectedNum === sec || selectedNum === first && selectedNum === third || selectedNum === sec && selectedNum === third){
-        Alert.alert('Два совпадения! Ваш баланс пополнен на 200$')
-                setCash(cash + 200)
-    } else if(selectedNum === first || selectedNum === sec || selectedNum === third){
-        Alert.alert('Одно совпадение! Ваш баланс пополнен на 100$')
-                setCash(cash + 100)
-    } else {
-        Alert.alert('Лох вонючий ниче не выиграл!')
-    }
+    const qwe = async () => {
+        if(cash < 100){
+            await AsyncStorage.removeItem('Username')
+            navigation.navigate('Login')
+        } else {
+            setCash(cash - 100)
+            if(selectedNum === first && selectedNum === sec && selectedNum === third){
+                Alert.alert('Три совпадения! Ебать! Ваш баланс пополнен на 100 000$')
+                        setCash(cash + 100000)
+            } else if(selectedNum === first && selectedNum === sec || selectedNum === first && selectedNum === third || selectedNum === sec && selectedNum === third){
+                Alert.alert('Два совпадения! Ваш баланс пополнен на 200$')
+                        setCash(cash + 200)
+            } else if(selectedNum === first || selectedNum === sec || selectedNum === third){
+                Alert.alert('Одно совпадение! Ваш баланс пополнен на 100$')
+                        setCash(cash + 100)
+            } else {
+                Alert.alert('Лох вонючий ниче не выиграл!')
+            }
+        }
+    
     }
 
     useEffect(() => {
-        qwe()
+        getData()
+    }, [])
+
+    useEffect(() => {
+        if(selectedNum){
+            qwe()
+        }
     }, [array])
     
 
@@ -60,9 +91,15 @@ const pressBtn7 = () => {
     setSelectedNum(7)
 }
 
+const calc2 = async () => {
+    await AsyncStorage.removeItem('Username')
+    navigation.navigate('Login')
+} 
+
   return (
     <View style={styles.cont}>
         <Text style={styles.title}>Casino-Naebalovo</Text>
+        <Text>Hello <Text style={styles.name}>{name}</Text></Text>
         <Text>Ваш баланс: {cash}$</Text>
         <View style={styles.row}><Text>Selected number: </Text><Text style={styles.selected}>{selectedNum}</Text></View>
         <View style={styles.btns}>
@@ -80,12 +117,13 @@ const pressBtn7 = () => {
             <View><Text>{third}</Text></View>
         </View>
         <Pressable style={styles.good} onPress={calc}><Text>Good luck!</Text></Pressable>
+        <Pressable style={styles.good2} onPress={calc2}><Text>Exit</Text></Pressable>
     </View>
   )
 }
 
 
-export default Casino
+export default Home
 
 const styles = StyleSheet.create({
     cont: {
@@ -129,5 +167,9 @@ const styles = StyleSheet.create({
     good: {
         padding: 10,
         backgroundColor: 'yellow'
+    },
+    good2: {
+        padding: 10,
+        backgroundColor: 'red'
     }
 })

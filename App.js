@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './app/navigation/AppNavigator';
+import AppNavigator2 from './app/navigation/AppNavigation2';
 import { StatusBar} from 'react-native';
 import Asd from './app/components/Asd';
 import Glas from './app/components/glas';
@@ -26,7 +27,12 @@ const App = () => {
     // </NavigationContainer>
     // <Asd />
     // <Glas />
-    <Casino />
+    // <Casino />
+    <NavigationContainer theme={MyTheme} >
+          <StatusBar />
+       <AppNavigator2/>
+    </NavigationContainer>
+
   );
 };
 
