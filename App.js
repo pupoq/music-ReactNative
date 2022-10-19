@@ -21,17 +21,17 @@ const App = () => {
   };
 
   return (
-    // <NavigationContainer theme={MyTheme}>
-    //   <StatusBar />
-    //   <AppNavigator/>
-    // </NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
+      <StatusBar />
+      <AppNavigator/>
+    </NavigationContainer>
     // <Asd />
     // <Glas />
     // <Casino />
-    <NavigationContainer theme={MyTheme} >
-          <StatusBar />
-       <AppNavigator2/>
-    </NavigationContainer>
+    // <NavigationContainer theme={MyTheme} >
+    //       <StatusBar />
+    //    <AppNavigator2/>
+    // </NavigationContainer>
 
   );
 };

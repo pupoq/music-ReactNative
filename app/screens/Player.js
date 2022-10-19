@@ -3,13 +3,13 @@ import React, {useState, useEffect, useRef} from 'react'
 import songs from '../../model/data';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Slider from '@react-native-community/slider';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Audio} from 'expo-av';
 import { play } from '../features/audioControlers';
 
 const {width} = Dimensions.get('window');
 
-const Player = () => {
+const Player = async () => {
   const ref = useRef(null)
   const [songIndex, setIndex] = useState(0)
   const [soundObj, setSoundObj] = useState(null)
@@ -73,8 +73,6 @@ const Player = () => {
     
   }
 
-  
-
   const handlePlay = async (songObj) => {
     if(soundObj === null){
       // const playbackObj = new Audio.Sound()
@@ -119,6 +117,19 @@ const Player = () => {
     asd()
   }, [songIndex])
 
+  const fav = async (song) => {
+    let qwe = await JSON.parse(AsyncStorage.getItem('Fav'))
+    console.log(qwe)
+    if(qwe !== null){
+      let arr = qwe
+      arr.push(song)
+      await AsyncStorage.setItem('Fav', JSON.stringify(arr))
+    } else {
+      let arr = [song]
+      await AsyncStorage.setItem('Fav', JSON.stringify(arr))
+    }
+   
+  }
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
@@ -161,7 +172,7 @@ const Player = () => {
           <Text style={styles.songTitle}>{songs[songIndex].title}</Text>
           <Text style={styles.songArtist}>{songs[songIndex].artist}</Text>
         </View>
-        <Ionicons name='heart-outline' size={24} color='grey'/> 
+        <Pressable onPress={ () => fav(songs[songIndex])}><Ionicons name='heart-outline' size={24} color='grey'/></Pressable>  
       </View>
       <View style={styles.buttonsContainer}>
           <Pressable onPress={() => {

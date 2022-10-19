@@ -24,6 +24,8 @@ const Login = ({navigation}) => {
                  console.log(error)
              }
         }
+
+        
     }
 
   return (
